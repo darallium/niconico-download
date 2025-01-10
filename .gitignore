@@ -11,3 +11,5 @@ wheels/
 Videos/
 yt-dlp.conf
 progress.txt
+**/*cookie*.txt
+list.txt

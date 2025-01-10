@@ -1,5 +1,5 @@
 [project]
-name = "niconico-download"
+name = "nicodlp"
 version = "0.1.0"
 description = "hoge"
 authors = [
@@ -7,6 +7,8 @@ authors = [
 ]
 dependencies = [
     "yt-dlp",
+    "beautifulsoup4>=4.12.3",
+    "requests>=2.32.3",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
@@ -19,8 +21,14 @@ build-backend = "hatchling.build"
 managed = true
 dev-dependencies = []
 
+[tool.rye.scripts]
+"mylist" = {chain = ["make:list", "dl:list"]}
+"make:list" = { call = "nicodlp.urls:main" }
+"dl:list" = { cmd = "yt-dlp -a ./list.txt" }
+
+
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/niconico"]
+packages = ["src/nicodlp"]

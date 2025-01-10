@@ -10,5 +10,19 @@
 #   universal: false
 
 -e file:.
-yt-dlp==2024.11.4
-    # via niconico-download
+beautifulsoup4==4.12.3
+    # via nicodlp
+certifi==2024.12.14
+    # via requests
+charset-normalizer==3.4.1
+    # via requests
+idna==3.10
+    # via requests
+requests==2.32.3
+    # via nicodlp
+soupsieve==2.6
+    # via beautifulsoup4
+urllib3==2.3.0
+    # via requests
+yt-dlp==2024.12.23
+    # via nicodlp

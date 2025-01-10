@@ -9,6 +9,8 @@ dependencies = [
     "yt-dlp",
     "beautifulsoup4>=4.12.3",
     "requests>=2.32.3",
+    "customtkinter>=5.2.2",
+    "ctkmessagebox>=2.7",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

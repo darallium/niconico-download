@@ -16,8 +16,19 @@ certifi==2024.12.14
     # via requests
 charset-normalizer==3.4.1
     # via requests
+ctkmessagebox==2.7
+    # via nicodlp
+customtkinter==5.2.2
+    # via ctkmessagebox
+    # via nicodlp
+darkdetect==0.8.0
+    # via customtkinter
 idna==3.10
     # via requests
+packaging==24.2
+    # via customtkinter
+pillow==11.1.0
+    # via ctkmessagebox
 requests==2.32.3
     # via nicodlp
 soupsieve==2.6

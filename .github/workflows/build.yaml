@@ -88,7 +88,8 @@ jobs:
         run: |
           python -m bundle.pyinstaller
           python -m bundle.pyinstaller --onedir
-          Compress-Archive -Path ./dist/nico-dlp/* -DestinationPath ./dist/nico-dlp_win.zip
+          ls ./dist
+          Compress-Archive -Path ./dist/niconico-download/* -DestinationPath ./dist/nico-dlp_win.zip
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:

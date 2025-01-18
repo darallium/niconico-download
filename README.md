@@ -1,3 +1,4 @@
+[![Build](https://github.com/darallium/niconico-download/actions/workflows/build.yaml/badge.svg?event=deployment_status)](https://github.com/darallium/niconico-download/actions/workflows/build.yaml)
 # nico-dlp GUI
 
 ニコニコ動画の動画をダウンロードするためのシンプルなGUIアプリケーションです。yt-dlp と aria2c を利用して、高画質・高速なダウンロードを実現します。

@@ -26,11 +26,13 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: VERSION: yyyy.mm.dd[.rev] or rev
+        description: |
+          VERSION: yyyy.mm.dd[.rev] or rev
         required: true
         type: string
       channel:
-        description: SOURCE of this build's updates: stable/nightly/master/<repo>
+        description: |
+          SOURCE of this build's updates: stable/nightly/master/<repo>
         required: true
         default: stable
         type: string

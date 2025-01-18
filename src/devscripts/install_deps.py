@@ -4,7 +4,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import argparse
 import re
@@ -19,7 +19,7 @@ from devscripts.utils import read_file
 def parse_args():
     parser = argparse.ArgumentParser(description='Install dependencies for yt-dlp')
     parser.add_argument(
-        'input', nargs='?', metavar='TOMLFILE', default=Path(__file__).parent.parent / 'pyproject.toml',
+        'input', nargs='?', metavar='TOMLFILE', default=Path(__file__).parent.parent.parent / 'pyproject.toml',
         help='input file (default: %(default)s)')
     parser.add_argument(
         '-e', '--exclude', metavar='DEPENDENCY', action='append',

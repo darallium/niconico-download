@@ -64,7 +64,7 @@ if __name__ == '__main__':
         '-s', '--suffix', default='',
         help='Add an alphanumeric suffix to the package version, e.g. "dev"')
     parser.add_argument(
-        '-o', '--output', default='yt_dlp/version.py',
+        '-o', '--output', default='src/nicodlp/version.py',
         help='The output file to write to (default: %(default)s)')
     parser.add_argument(
         'version', nargs='?', default=None,

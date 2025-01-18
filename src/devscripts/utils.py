@@ -13,7 +13,7 @@ def write_file(fname, content, mode='w'):
         return f.write(content)
 
 
-def read_version(fname='yt_dlp/version.py', varname='__version__'):
+def read_version(fname='src/nicodlp/version.py', varname='__version__'):
     """Get the version without importing the package"""
     items = {}
     exec(compile(read_file(fname), fname, 'exec'), items)

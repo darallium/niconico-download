@@ -29,7 +29,7 @@ IE_TEMPLATE = '''
 class {name}({bases}):
     _module = {module!r}
 '''
-MODULE_TEMPLATE = read_file('devscripts/lazy_load_template.py')
+MODULE_TEMPLATE = read_file('src/devscripts/lazy_load_template.py')
 
 
 def main():

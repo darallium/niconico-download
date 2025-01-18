@@ -37,11 +37,11 @@ on:
         default: stable
         type: string
       windows:
-        description: nico-dlp.exe, nico-dlp_win.zip
+        description: nico_dlp.exe
         default: true
         type: boolean
       windows32:
-        description: nico-dlp_x86.exe
+        description: nico_dlp_x86.exe
         default: true
         type: boolean
       origin:
@@ -87,14 +87,12 @@ jobs:
         run: |
           python -m bundle.pyinstaller
           python -m bundle.pyinstaller --onedir
-          Compress-Archive -Path ./dist/niconico-download/* -DestinationPath ./dist/nico-dlp_win.zip
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: win64
           path: |
-            dist/nico-dlp.exe
-            dist/nico-dlp_win.zip
+            dist/nico_dlp.exe
           compression-level: 0
 
 
@@ -124,5 +122,5 @@ jobs:
         with:
           name: win32
           path: |
-            dist/nico-dlp_x86.exe
+            dist/nico_dlp_x86.exe
           compression-level: 0

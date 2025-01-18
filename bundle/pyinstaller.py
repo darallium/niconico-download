@@ -3,9 +3,6 @@
 # Allow direct execution
 import os
 import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import platform
 
 from PyInstaller.__main__ import run as run_pyinstaller
@@ -20,7 +17,9 @@ if MACHINE in ("x86", "x86_64", "amd64", "i386", "i686"):
 
 
 def main():
-    opts, version = parse_options(), "0.0.1"
+    opts = sys.argv[1:]
+    version = "1.0.0"  # デフォルトのバージョン。必要に応じて変更
+    script_name = "src/nicodlp/__main__.py" # ビルド対象のスクリプト名。適宜変更
 
     onedir = "--onedir" in opts or "-D" in opts
     if not onedir and "-F" not in opts and "--onefile" not in opts:
@@ -28,25 +27,18 @@ def main():
 
     name, final_file = exe(onedir)
     print(
-        f"Building yt-dlp v{version} for {OS_NAME} {platform.machine()} with options {opts}"
+        f"Building {script_name} v{version} for {OS_NAME} {platform.machine()} with options {opts}"
     )
-    print('Remember to update the version using  "devscripts/update-version.py"')
-    if not os.path.isfile("yt_dlp/extractor/lazy_extractors.py"):
-        print(
-            "WARNING: Building without lazy_extractors. Run  "
-            '"devscripts/make_lazy_extractors.py"  to build lazy extractors',
-            file=sys.stderr,
-        )
     print(f"Destination: {final_file}\n")
 
     opts = [
         f"--name={name}",
-        "--icon=devscripts/logo.ico",
         "--upx-exclude=vcruntime140.dll",
+        # "--icon=your_icon.ico",  # 必要に応じてアイコンを追加
         "--noconfirm",
-        "--additional-hooks-dir=yt_dlp/__pyinstaller",
+        # "--additional-hooks-dir=.", # 必要に応じてフックディレクトリを指定
         *opts,
-        "yt_dlp/__main__.py",
+        script_name, # ビルド対象のスクリプト
     ]
 
     print(f"Running PyInstaller with {opts}")
@@ -55,29 +47,13 @@ def main():
 
 
 def parse_options():
-    # Compatibility with older arguments
-    opts = sys.argv[1:]
-    if opts[0:1] in (["32"], ["64"]):
-        if ARCH != opts[0]:
-            raise Exception(
-                f"{opts[0]}bit executable cannot be built on a {ARCH}bit system"
-            )
-        opts = opts[1:]
-    return opts
+    # 以前の引数との互換性のためのコードは不要
+    return sys.argv[1:]
 
 
 def exe(onedir):
     """@returns (name, path)"""
-    name = "_".join(
-        filter(
-            None,
-            (
-                "yt-dlp",
-                {"win32": "", "darwin": "macos"}.get(OS_NAME, OS_NAME),
-                MACHINE,
-            ),
-        )
-    )
+    name = "nico_dlp" # アプリケーション名。適宜変更
     return name, "".join(
         filter(
             None,
@@ -102,6 +78,7 @@ def set_version_info(exe, version):
 
 
 def windows_set_version(exe, version):
+    # Windowsバージョン情報の記述。必要に応じて修正
     from PyInstaller.utils.win32.versioninfo import (
         FixedFileInfo,
         StringFileInfo,
@@ -118,58 +95,6 @@ def windows_set_version(exe, version):
         from PyInstaller.utils.win32.versioninfo import (
             write_version_info_to_executable as SetVersion,
         )
-
-    version_list = version_to_list(version)
-    suffix = MACHINE and f"_{MACHINE}"
-    SetVersion(
-        exe,
-        VSVersionInfo(
-            ffi=FixedFileInfo(
-                filevers=version_list,
-                prodvers=version_list,
-                mask=0x3F,
-                flags=0x0,
-                OS=0x4,
-                fileType=0x1,
-                subtype=0x0,
-                date=(0, 0),
-            ),
-            kids=[
-                StringFileInfo(
-                    [
-                        StringTable(
-                            "040904B0",
-                            [
-                                StringStruct(
-                                    "Comments", f"yt-dlp{suffix} Command Line Interface"
-                                ),
-                                StringStruct(
-                                    "CompanyName", "https://github.com/yt-dlp"
-                                ),
-                                StringStruct(
-                                    "FileDescription",
-                                    "yt-dlp%s" % (MACHINE and f" ({MACHINE})"),
-                                ),
-                                StringStruct("FileVersion", version),
-                                StringStruct("InternalName", f"yt-dlp{suffix}"),
-                                StringStruct(
-                                    "LegalCopyright",
-                                    "pukkandan.ytdlp@gmail.com | UNLICENSE",
-                                ),
-                                StringStruct("OriginalFilename", f"yt-dlp{suffix}.exe"),
-                                StringStruct("ProductName", f"yt-dlp{suffix}"),
-                                StringStruct(
-                                    "ProductVersion",
-                                    f"{version}{suffix} on Python {platform.python_version()}",
-                                ),
-                            ],
-                        )
-                    ]
-                ),
-                VarFileInfo([VarStruct("Translation", [0, 1200])]),
-            ],
-        ),
-    )
 
 
 if __name__ == "__main__":

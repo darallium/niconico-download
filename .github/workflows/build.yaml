@@ -118,7 +118,6 @@ jobs:
       - name: Prepare
         run: |
           python src/devscripts/update-version.py -c "${{ inputs.channel }}" -r "${{ needs.process.outputs.origin }}" "${{ inputs.version }}"
-          python src/devscripts/make_lazy_extractors.py
       - name: Build
         run: |
           python -m bundle.pyinstaller

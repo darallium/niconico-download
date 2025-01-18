@@ -10,10 +10,16 @@
 #   universal: false
 
 -e file:.
+attrs==24.3.0
+    # via outcome
+    # via trio
 beautifulsoup4==4.12.3
     # via nicodlp
 certifi==2024.12.14
     # via requests
+    # via selenium
+cffi==1.17.1
+    # via trio
 charset-normalizer==3.4.1
     # via requests
 ctkmessagebox==2.7
@@ -23,19 +29,46 @@ customtkinter==5.2.2
     # via nicodlp
 darkdetect==0.8.0
     # via customtkinter
+h11==0.14.0
+    # via wsproto
 idna==3.10
     # via requests
+    # via trio
+outcome==1.3.0.post0
+    # via trio
 packaging==24.2
     # via customtkinter
 pillow==11.1.0
     # via ctkmessagebox
+pycparser==2.22
+    # via cffi
 pycryptodome==3.21.0
     # via nicodlp
+pysocks==1.7.1
+    # via urllib3
 requests==2.32.3
     # via nicodlp
+selenium==4.27.1
+    # via nicodlp
+sniffio==1.3.1
+    # via trio
+sortedcontainers==2.4.0
+    # via trio
 soupsieve==2.6
     # via beautifulsoup4
+trio==0.28.0
+    # via selenium
+    # via trio-websocket
+trio-websocket==0.11.1
+    # via selenium
+typing-extensions==4.12.2
+    # via selenium
 urllib3==2.3.0
     # via requests
+    # via selenium
+websocket-client==1.8.0
+    # via selenium
+wsproto==1.2.0
+    # via trio-websocket
 yt-dlp==2025.1.15
     # via nicodlp

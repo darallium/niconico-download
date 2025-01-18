@@ -8,6 +8,9 @@ from multiprocessing import Process, freeze_support
 
 import webbrowser
 
+from nicodlp.cookie import login_nicovideo, save_cookies_to_txt
+from selenium import webdriver
+
 ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -231,6 +234,35 @@ And place it in the same directory as this script.""",
         )
         self.download_button.pack(pady=20)
 
+        # email/password
+        self.email_password_frame = ctk.CTkFrame(self)
+        self.email_password_frame.pack(pady=10, padx=20, fill="x")
+
+        self.email_label = ctk.CTkLabel(self.email_password_frame, text="mail/tel")
+        self.email_label.grid(row=0, column=0, sticky="w")
+        self.email_textbox = ctk.CTkEntry(
+            self.email_password_frame,
+            width=250,
+            textvariable=ctk.StringVar(
+                value="test@example.com",
+            ),
+        )
+        self.email_textbox.grid(row=0, column=1, padx=5)
+
+        self.password_label = ctk.CTkLabel(self.email_password_frame, text="password")
+        self.password_label.grid(row=0, column=2, sticky="w")
+        self.password_textbox = ctk.CTkEntry(
+            self.email_password_frame,
+            width=250,
+            textvariable=ctk.StringVar(value="password"),
+        )
+        self.password_textbox.grid(row=0, column=3, padx=5)
+
+        self.cookie_runner_button = ctk.CTkButton(
+            self, text="Login to niconico", command=self.get_cookie
+        )
+        self.cookie_runner_button.pack(pady=20)
+
     def save_config_click(self):
         self.config["-o"] = self.output_entry.get()
         self.config["-f"] = self.quality_entry.get()
@@ -247,6 +279,21 @@ And place it in the same directory as this script.""",
         url = self.download_entry.get()
         p = Process(target=download_video, args=(url, self.config_file))
         p.start()
+
+    def get_cookie(self):
+        email = self.email_textbox.get()
+        password = self.password_textbox.get()
+        driver = webdriver.Chrome()
+        try:
+            login_nicovideo(driver, email, password)
+            save_cookies_to_txt(driver)
+            print("Cookieをcookier.txtに保存しました。")
+
+        except Exception as e:
+            print(f"エラーが発生しました: {e}")
+
+        finally:
+            driver.quit()
 
 
 def download_video(url, config_file):
@@ -267,6 +314,7 @@ def download_video(url, config_file):
         "ignoreerrors": True,
         "continue": True,
         "nooverwrites": True,
+        "cookiefile": "cookier.txt",
     }
     print(f"Downloading {url}")
     print(f"Config file: {config_file}")

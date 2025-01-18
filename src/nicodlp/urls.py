@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import argparse
 
+
 def get_nc_link_hrefs(url):
     """
     指定されたURLのページから、NC-Linkクラスを持つすべてのaタグのhrefを取得します。
@@ -31,32 +32,41 @@ def get_nc_link_hrefs(url):
         print(f"An unexpected error occurred: {e}")
         return None
 
+
 def save_hrefs_to_file(hrefs, filename="list.txt"):
     try:
-        existing_hrefs = set()  
+        existing_hrefs = set()
         try:
-            with open(filename, "r") as f:  
+            with open(filename, "r") as f:
                 for line in f:
                     existing_hrefs.add(line.strip())
         except FileNotFoundError:
-            pass  
+            pass
 
-        with open(filename, "a") as f:  
+        with open(filename, "a") as f:
             for href in hrefs:
-                if href not in existing_hrefs:  
+                if href not in existing_hrefs:
                     f.write(href + "\n")
-                    existing_hrefs.add(href)  
+                    existing_hrefs.add(href)
     except Exception as e:
         print(f"Error saving hrefs to file: {e}")
 
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="指定されたURLのページから、指定されたクラスを持つすべてのaタグのhrefを取得します。")
+    parser = argparse.ArgumentParser(
+        description="指定されたURLのページから、指定されたクラスを持つすべてのaタグのhrefを取得します。"
+    )
     parser.add_argument("url", help="ターゲットURL")
-    parser.add_argument("-f", "--filename", default="list.txt", help="保存先のファイル名 (デフォルト: list.txt)")
+    parser.add_argument(
+        "-f",
+        "--filename",
+        default="list.txt",
+        help="保存先のファイル名 (デフォルト: list.txt)",
+    )
     args = parser.parse_args()
-    if args.url :
+    if args.url:
         href_list = get_nc_link_hrefs(args.url)
-    else: 
+    else:
         print("aborted")
         exit(1)
 

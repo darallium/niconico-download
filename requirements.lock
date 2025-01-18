@@ -29,11 +29,13 @@ packaging==24.2
     # via customtkinter
 pillow==11.1.0
     # via ctkmessagebox
+pycryptodome==3.21.0
+    # via nicodlp
 requests==2.32.3
     # via nicodlp
 soupsieve==2.6
     # via beautifulsoup4
 urllib3==2.3.0
     # via requests
-yt-dlp==2024.12.23
+yt-dlp==2025.1.15
     # via nicodlp

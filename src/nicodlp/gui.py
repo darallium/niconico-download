@@ -1,9 +1,10 @@
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
 import os
+import sys
 
 import yt_dlp
-from multiprocessing import Process
+from multiprocessing import Process, freeze_support
 
 import webbrowser
 
@@ -12,8 +13,8 @@ ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark
 
 
 def check_aria2c():
-    if os.path.exists("aria2d.exe"):
-        print(os.path.abspath("aria2d.exe"))
+    if os.path.exists("aria2c.exe"):
+        print(os.path.abspath("aria2c.exe"))
         return True
     else:
         return False
@@ -40,7 +41,7 @@ And place it in the same directory as this script.""",
             response = msg_aria2c.get()
             if response == "Exit":
                 self.destroy()
-                exit()
+                sys.exit()
             if response == "Open Browser":
                 webbrowser.open("https://github.com/aria2/aria2/releases/latest")
 
@@ -275,6 +276,12 @@ def download_video(url, config_file):
         ydl.download([url])
 
 
-if __name__ == "__main__":
+def gui_run():
+    freeze_support()
     app = App()
     app.mainloop()
+    sys.exit()
+
+
+if __name__ == "__main__":
+    gui_run()

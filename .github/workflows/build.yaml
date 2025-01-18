@@ -37,11 +37,11 @@ on:
         default: stable
         type: string
       windows:
-        description: nico-dlp.exe, nico-dlp_win.zip
+        description: nico_dlp.exe
         default: true
         type: boolean
       windows32:
-        description: nico-dlp_x86.exe
+        description: nico_dlp_x86.exe
         default: true
         type: boolean
       origin:
@@ -77,25 +77,22 @@ jobs:
           python-version: "3.10"
       - name: Install Requirements
         run: |
-          python devscripts/install_deps.py -o --include build
-          python devscripts/install_deps.py --include curl-cffi
+          python src/devscripts/install_deps.py -o --include build
+          python src/devscripts/install_deps.py --include curl-cffi
           python -m pip install -U "https://yt-dlp.github.io/Pyinstaller-Builds/x86_64/pyinstaller-6.11.1-py3-none-any.whl"
       - name: Prepare
         run: |
-          python devscripts/update-version.py -c "${{ inputs.channel }}" -r "${{ needs.process.outputs.origin }}" "${{ inputs.version }}"
-          python devscripts/make_lazy_extractors.py
+          python src/devscripts/update-version.py -c "${{ inputs.channel }}" -r "${{ needs.process.outputs.origin }}" "${{ inputs.version }}"
       - name: Build
         run: |
           python -m bundle.pyinstaller
           python -m bundle.pyinstaller --onedir
-          Compress-Archive -Path ./dist/nico-dlp/* -DestinationPath ./dist/nico-dlp_win.zip
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: win64
           path: |
-            dist/nico-dlp.exe
-            dist/nico-dlp_win.zip
+            dist/nico_dlp.exe
           compression-level: 0
 
 
@@ -111,13 +108,12 @@ jobs:
           architecture: "x86"
       - name: Install Requirements
         run: |
-          python devscripts/install_deps.py -o --include build
-          python devscripts/install_deps.py
+          python src/devscripts/install_deps.py -o --include build
+          python src/devscripts/install_deps.py
           python -m pip install -U "https://yt-dlp.github.io/Pyinstaller-Builds/i686/pyinstaller-6.11.1-py3-none-any.whl"
       - name: Prepare
         run: |
-          python devscripts/update-version.py -c "${{ inputs.channel }}" -r "${{ needs.process.outputs.origin }}" "${{ inputs.version }}"
-          python devscripts/make_lazy_extractors.py
+          python src/devscripts/update-version.py -c "${{ inputs.channel }}" -r "${{ needs.process.outputs.origin }}" "${{ inputs.version }}"
       - name: Build
         run: |
           python -m bundle.pyinstaller
@@ -126,5 +122,5 @@ jobs:
         with:
           name: win32
           path: |
-            dist/nico-dlp_x86.exe
+            dist/nico_dlp_x86.exe
           compression-level: 0

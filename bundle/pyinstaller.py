@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 # Allow direct execution
-import os
 import sys
 import platform
 
@@ -19,7 +18,7 @@ if MACHINE in ("x86", "x86_64", "amd64", "i386", "i686"):
 def main():
     opts = sys.argv[1:]
     version = "1.0.0"  # デフォルトのバージョン。必要に応じて変更
-    script_name = "src/nicodlp/__main__.py" # ビルド対象のスクリプト名。適宜変更
+    script_name = "src/nicodlp/__main__.py"  # ビルド対象のスクリプト名。適宜変更
 
     onedir = "--onedir" in opts or "-D" in opts
     if not onedir and "-F" not in opts and "--onefile" not in opts:
@@ -38,7 +37,7 @@ def main():
         "--noconfirm",
         # "--additional-hooks-dir=.", # 必要に応じてフックディレクトリを指定
         *opts,
-        script_name, # ビルド対象のスクリプト
+        script_name,  # ビルド対象のスクリプト
     ]
 
     print(f"Running PyInstaller with {opts}")
@@ -53,7 +52,7 @@ def parse_options():
 
 def exe(onedir):
     """@returns (name, path)"""
-    name = "nico_dlp" # アプリケーション名。適宜変更
+    name = "nico_dlp"  # アプリケーション名。適宜変更
     return name, "".join(
         filter(
             None,
@@ -79,22 +78,12 @@ def set_version_info(exe, version):
 
 def windows_set_version(exe, version):
     # Windowsバージョン情報の記述。必要に応じて修正
-    from PyInstaller.utils.win32.versioninfo import (
-        FixedFileInfo,
-        StringFileInfo,
-        StringStruct,
-        StringTable,
-        VarFileInfo,
-        VarStruct,
-        VSVersionInfo,
-    )
 
-    try:
-        from PyInstaller.utils.win32.versioninfo import SetVersion
-    except ImportError:  # Pyinstaller >= 5.8
-        from PyInstaller.utils.win32.versioninfo import (
-            write_version_info_to_executable as SetVersion,
-        )
+    # try:
+    #    from PyInstaller.utils.win32.versioninfo import SetVersion
+    # except ImportError:  # Pyinstaller >= 5.8
+    #    pass
+    pass
 
 
 if __name__ == "__main__":

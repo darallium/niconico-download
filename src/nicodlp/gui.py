@@ -275,6 +275,10 @@ def download_video(url, config_file):
         ydl.download([url])
 
 
-if __name__ == "__main__":
+def gui_run():
     app = App()
     app.mainloop()
+
+
+if __name__ == "__main__":
+    gui_run()

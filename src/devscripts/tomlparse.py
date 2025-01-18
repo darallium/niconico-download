@@ -15,25 +15,27 @@ import datetime as dt
 import json
 import re
 
-WS = r'(?:[\ \t]*)'
+WS = r"(?:[\ \t]*)"
 STRING_RE = re.compile(r'"(?:\\.|[^\\"\n])*"|\'[^\'\n]*\'')
-SINGLE_KEY_RE = re.compile(rf'{STRING_RE.pattern}|[A-Za-z0-9_-]+')
-KEY_RE = re.compile(rf'{WS}(?:{SINGLE_KEY_RE.pattern}){WS}(?:\.{WS}(?:{SINGLE_KEY_RE.pattern}){WS})*')
-EQUALS_RE = re.compile(rf'={WS}')
+SINGLE_KEY_RE = re.compile(rf"{STRING_RE.pattern}|[A-Za-z0-9_-]+")
+KEY_RE = re.compile(
+    rf"{WS}(?:{SINGLE_KEY_RE.pattern}){WS}(?:\.{WS}(?:{SINGLE_KEY_RE.pattern}){WS})*"
+)
+EQUALS_RE = re.compile(rf"={WS}")
 WS_RE = re.compile(WS)
 
-_SUBTABLE = rf'(?P<subtable>^\[(?P<is_list>\[)?(?P<path>{KEY_RE.pattern})\]\]?)'
-EXPRESSION_RE = re.compile(rf'^(?:{_SUBTABLE}|{KEY_RE.pattern}=)', re.MULTILINE)
+_SUBTABLE = rf"(?P<subtable>^\[(?P<is_list>\[)?(?P<path>{KEY_RE.pattern})\]\]?)"
+EXPRESSION_RE = re.compile(rf"^(?:{_SUBTABLE}|{KEY_RE.pattern}=)", re.MULTILINE)
 
-LIST_WS_RE = re.compile(rf'{WS}((#[^\n]*)?\n{WS})*')
-LEFTOVER_VALUE_RE = re.compile(r'[^,}\]\t\n#]+')
+LIST_WS_RE = re.compile(rf"{WS}((#[^\n]*)?\n{WS})*")
+LEFTOVER_VALUE_RE = re.compile(r"[^,}\]\t\n#]+")
 
 
 def parse_key(value: str):
     for match in SINGLE_KEY_RE.finditer(value):
         if match[0][0] == '"':
             yield json.loads(match[0])
-        elif match[0][0] == '\'':
+        elif match[0][0] == "'":
             yield match[0][1:-1]
         else:
             yield match[0]
@@ -73,7 +75,7 @@ def parse_enclosed(data: str, index: int, end: str, ws_re: re.Pattern):
         if match := ws_re.match(data, index):
             index = match.end()
 
-        if data[index] == ',':
+        if data[index] == ",":
             index += 1
 
         if match := ws_re.match(data, index):
@@ -84,10 +86,10 @@ def parse_enclosed(data: str, index: int, end: str, ws_re: re.Pattern):
 
 
 def parse_value(data: str, index: int):
-    if data[index] == '[':
+    if data[index] == "[":
         result = []
 
-        indices = parse_enclosed(data, index, ']', LIST_WS_RE)
+        indices = parse_enclosed(data, index, "]", LIST_WS_RE)
         valid, index = next(indices)
         while valid:
             index, value = parse_value(data, index)
@@ -96,10 +98,10 @@ def parse_value(data: str, index: int):
 
         return index, result
 
-    if data[index] == '{':
+    if data[index] == "{":
         result = {}
 
-        indices = parse_enclosed(data, index, '}', WS_RE)
+        indices = parse_enclosed(data, index, "}", WS_RE)
         valid, index = next(indices)
         while valid:
             valid, index = indices.send(parse_kv_pair(data, index, result))
@@ -107,7 +109,9 @@ def parse_value(data: str, index: int):
         return index, result
 
     if match := STRING_RE.match(data, index):
-        return match.end(), json.loads(match[0]) if match[0][0] == '"' else match[0][1:-1]
+        return match.end(), json.loads(match[0]) if match[0][0] == '"' else match[0][
+            1:-1
+        ]
 
     match = LEFTOVER_VALUE_RE.match(data, index)
     assert match
@@ -118,7 +122,7 @@ def parse_value(data: str, index: int):
         dt.time.fromisoformat,
         dt.date.fromisoformat,
         dt.datetime.fromisoformat,
-        {'true': True, 'false': False}.get,
+        {"true": True, "false": False}.get,
     ]:
         try:
             value = func(value)
@@ -155,9 +159,9 @@ def parse_toml(data: str):
         if not match:
             break
 
-        if match.group('subtable'):
+        if match.group("subtable"):
             index = match.end()
-            path, is_list = match.group('path', 'is_list')
+            path, is_list = match.group("path", "is_list")
             target = get_target(root, list(parse_key(path)), bool(is_list))
             continue
 
@@ -172,10 +176,10 @@ def main():
     from pathlib import Path
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('infile', type=Path, help='The TOML file to read as input')
+    parser.add_argument("infile", type=Path, help="The TOML file to read as input")
     args = parser.parse_args()
 
-    with args.infile.open('r', encoding='utf-8') as file:
+    with args.infile.open("r", encoding="utf-8") as file:
         data = file.read()
 
     def default(obj):
@@ -185,5 +189,5 @@ def main():
     print(json.dumps(parse_toml(data), default=default))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

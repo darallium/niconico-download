@@ -10,30 +10,13 @@ import platform
 
 from PyInstaller.__main__ import run as run_pyinstaller
 
-def read_file(fname):
-    with open(fname, encoding='utf-8') as f:
-        return f.read()
-
-
-def write_file(fname, content, mode='w'):
-    with open(fname, mode, encoding='utf-8') as f:
-        return f.write(content)
-
-
-def read_version(fname='../src/nicodlp/version.py', varname='__version__'):
-    """Get the version without importing the package"""
-    items = {}
-    exec(compile(read_file(fname), fname, 'exec'), items)
-    return items[varname]
-
-
 OS_NAME, MACHINE, ARCH = sys.platform, platform.machine().lower(), platform.architecture()[0][:2]
 if MACHINE in ('x86', 'x86_64', 'amd64', 'i386', 'i686'):
     MACHINE = 'x86' if ARCH == '32' else ''
 
 
 def main():
-    opts, version = parse_options(), read_version()
+    opts, version = parse_options(), '0.0.1'
 
     onedir = '--onedir' in opts or '-D' in opts
     if not onedir and '-F' not in opts and '--onefile' not in opts:

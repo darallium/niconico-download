@@ -77,13 +77,13 @@ jobs:
           python-version: "3.10"
       - name: Install Requirements
         run: |
-          python devscripts/install_deps.py -o --include build
-          python devscripts/install_deps.py --include curl-cffi
+          python src/devscripts/install_deps.py -o --include build
+          python src/devscripts/install_deps.py --include curl-cffi
           python -m pip install -U "https://yt-dlp.github.io/Pyinstaller-Builds/x86_64/pyinstaller-6.11.1-py3-none-any.whl"
       - name: Prepare
         run: |
-          python devscripts/update-version.py -c "${{ inputs.channel }}" -r "${{ needs.process.outputs.origin }}" "${{ inputs.version }}"
-          python devscripts/make_lazy_extractors.py
+          python src/devscripts/update-version.py -c "${{ inputs.channel }}" -r "${{ needs.process.outputs.origin }}" "${{ inputs.version }}"
+          python src/devscripts/make_lazy_extractors.py
       - name: Build
         run: |
           python -m bundle.pyinstaller
@@ -112,13 +112,13 @@ jobs:
           architecture: "x86"
       - name: Install Requirements
         run: |
-          python devscripts/install_deps.py -o --include build
-          python devscripts/install_deps.py
+          python src/devscripts/install_deps.py -o --include build
+          python src/devscripts/install_deps.py
           python -m pip install -U "https://yt-dlp.github.io/Pyinstaller-Builds/i686/pyinstaller-6.11.1-py3-none-any.whl"
       - name: Prepare
         run: |
-          python devscripts/update-version.py -c "${{ inputs.channel }}" -r "${{ needs.process.outputs.origin }}" "${{ inputs.version }}"
-          python devscripts/make_lazy_extractors.py
+          python src/devscripts/update-version.py -c "${{ inputs.channel }}" -r "${{ needs.process.outputs.origin }}" "${{ inputs.version }}"
+          python src/devscripts/make_lazy_extractors.py
       - name: Build
         run: |
           python -m bundle.pyinstaller

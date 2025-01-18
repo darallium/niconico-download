@@ -10,6 +10,8 @@
 #   universal: false
 
 -e file:.
+altgraph==0.17.4
+    # via pyinstaller
 beautifulsoup4==4.12.3
     # via nicodlp
 certifi==2024.12.14
@@ -27,12 +29,24 @@ idna==3.10
     # via requests
 packaging==24.2
     # via customtkinter
+    # via pyinstaller
+    # via pyinstaller-hooks-contrib
+pefile==2023.2.7
+    # via pyinstaller
 pillow==11.1.0
     # via ctkmessagebox
 pycryptodome==3.21.0
     # via nicodlp
+pyinstaller==6.11.1
+pyinstaller-hooks-contrib==2025.0
+    # via pyinstaller
+pywin32-ctypes==0.2.3
+    # via pyinstaller
 requests==2.32.3
     # via nicodlp
+setuptools==75.8.0
+    # via pyinstaller
+    # via pyinstaller-hooks-contrib
 soupsieve==2.6
     # via beautifulsoup4
 urllib3==2.3.0

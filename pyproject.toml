@@ -22,7 +22,9 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = []
+dev-dependencies = [
+    "pyinstaller>=6.11.1",
+]
 
 [tool.rye.scripts]
 "mylist" = {chain = ["make:list", "dl:list"]}

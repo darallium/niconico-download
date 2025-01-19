@@ -17,7 +17,7 @@
 
 ## スクリーンショット
 
-![image](https://github.com/user-attachments/assets/4a4d5651-0396-4d1d-a09c-3da191c18253)
+![image](https://i.imgur.com/jUZxejh.png)
 
 
 
